@@ -1,37 +1,27 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const plugins = require('./plugins')
+const { resolve } = require('./utils')
+const jsRules = require('./rules/jsRules')
+const styleRules = require('./rules/styleRules')
 
 module.exports = {
     entry: {
-        app: path.join(__dirname, './../', 'src/index.tsx'),
+        app: resolve('src/index.tsx'),
     },
     output: {
-        path: path.join(__dirname, './../', 'dist'),
+        path: resolve('dist'),
         filename: '[name].js'
     },
     module: {
-        rules: [
-            {
-                // 要解析什么文件
-                test: /\.ts(x?)$/,
-                // 解析规则
-                use: [
-                    {
-                        loader: 'awesome-typescript-loader',
-                        options: {
-
-                        }
-                    }
-                ]
-            }
-        ]
+        rules: [...jsRules, ...styleRules]
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        plugins: [
+            new TsconfigPathsPlugin({
+                configFile: resolve('tsconfig.json')
+            })
+        ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'build/tpl/index.html',
-        })
-    ]
+    plugins: [...plugins]
 }
