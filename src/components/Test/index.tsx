@@ -1,7 +1,10 @@
 import * as React from 'react'
 import { Button } from 'antd'
 
-class Test extends React.Component {
+interface IP {
+    isCollapsed?:true
+}
+class Test extends React.Component<IP> {
     render() {
         return (
             <div>
@@ -10,5 +13,4 @@ class Test extends React.Component {
         )
     }
 }
-
-export default Test
+ export default Test
